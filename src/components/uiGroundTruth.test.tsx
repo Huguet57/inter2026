@@ -12,7 +12,7 @@ const { useMatchesMock } = vi.hoisted(() => ({
   useMatchesMock: vi.fn(),
 }));
 
-vi.mock('../context/MatchContext', () => ({
+vi.mock('../context/useMatches', () => ({
   useMatches: useMatchesMock,
 }));
 
