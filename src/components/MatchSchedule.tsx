@@ -3,7 +3,7 @@ import Play from 'lucide-react/dist/esm/icons/play';
 import ChevronDown from 'lucide-react/dist/esm/icons/chevron-down';
 import ChevronUp from 'lucide-react/dist/esm/icons/chevron-up';
 import X from 'lucide-react/dist/esm/icons/x';
-import { useMatches } from '../context/MatchContext';
+import { useMatches } from '../context/useMatches';
 import { Match, groups } from '../data/tournament';
 import {
   calculateGroupStandings,

@@ -3,37 +3,36 @@
   "version": "1.0.0",
   "description": "Inter de Marracos 2026",
   "type": "module",
-  "homepage": "https://inter2026.tenimaleta.com",
+  "homepage": "https://inter-2026.pages.dev",
   "scripts": {
     "setup": "npm install",
-    "install:server": "npm --prefix server install",
-    "postinstall": "npm run install:server",
     "dev:client": "vite",
-    "dev:server": "npm --prefix server run dev",
-    "dev": "concurrently --kill-others-on-fail --names client,server \"npm run dev:client\" \"npm run dev:server\"",
+    "dev:cloudflare": "wrangler pages dev public --port 8788",
+    "dev": "concurrently --kill-others-on-fail --names client,cloudflare \"npm run dev:client\" \"npm run dev:cloudflare\"",
     "build": "vite build",
     "lint": "eslint .",
     "test": "vitest run",
     "test:watch": "vitest",
     "check": "npm run lint && npm run test",
     "preview": "vite preview",
-    "start:server": "npm --prefix server run start",
-    "init:data": "npm --prefix server run init:data",
+    "login:cloudflare": "wrangler login",
+    "d1:migrate:local": "wrangler d1 execute inter-2026-prod --local --file=d1/migrations/001_init.sql",
+    "d1:migrate:remote": "wrangler d1 execute inter-2026-prod --remote --file=d1/migrations/001_init.sql",
+    "d1:seed:current": "node scripts/export-current-json-to-sql.mjs",
+    "d1:seed:base": "tsx scripts/export-base-tournament-to-sql.ts",
+    "d1:seed:current:local": "npm run d1:seed:current && wrangler d1 execute inter-2026-prod --local --file=d1/seed-current.sql",
+    "d1:seed:current:remote": "npm run d1:seed:current && wrangler d1 execute inter-2026-prod --remote --file=d1/seed-current.sql",
+    "init:data": "npm run d1:seed:base",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "wrangler pages deploy dist --project-name inter-2026 --branch main --commit-dirty=true"
   },
   "dependencies": {
-    "body-parser": "^1.20.3",
-    "cors": "^2.8.5",
-    "express": "^4.21.2",
     "lucide-react": "^0.344.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.1",
-    "@types/cors": "^2.8.17",
-    "@types/express": "^5.0.0",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
@@ -46,9 +45,11 @@
     "globals": "^15.9.0",
     "postcss": "^8.4.35",
     "tailwindcss": "^3.4.1",
+    "tsx": "^4.19.4",
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.3.0",
     "vite": "^5.4.2",
-    "vitest": "^3.0.7"
+    "vitest": "^3.0.7",
+    "wrangler": "^4.5.0"
   }
 }

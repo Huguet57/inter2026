@@ -1,0 +1,13 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "inter-2026",
+	"compatibility_date": "2026-03-12",
+	"pages_build_output_dir": "./dist",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "inter-2026-prod",
+      "database_id": "3fafe920-d2ab-4dcb-9760-4114978302fe"
+    }
+  ]
+}

@@ -7,8 +7,8 @@ import Plus from 'lucide-react/dist/esm/icons/plus';
 import Minus from 'lucide-react/dist/esm/icons/minus';
 import Loader from 'lucide-react/dist/esm/icons/loader';
 import Lock from 'lucide-react/dist/esm/icons/lock';
-import { useMatches } from '../context/MatchContext';
-import { useAuth } from '../context/AuthContext';
+import { useMatches } from '../context/useMatches';
+import { useAuth } from '../context/useAuth';
 import {
   calculateGroupStandings,
   getSeedMap,
@@ -219,19 +219,19 @@ const MatchControl: React.FC<MatchControlProps> = ({
 
 export const RefereeMatchControl: React.FC = () => {
   const { matches, updateMatch, knockoutMatches, updateKnockoutMatch, loading } = useMatches();
-  const { isReferee, login, logout } = useAuth();
+  const { isReferee, loading: authLoading, login, logout } = useAuth();
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   
-  const handlePasswordSubmit = (e: React.FormEvent) => {
+  const handlePasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === 'tenimaleta') {
-      // Correct password
-      login();
+    const result = await login(password);
+
+    if (result.ok) {
       setError('');
+      setPassword('');
     } else {
-      // Incorrect password
-      setError('Contrasenya incorrecta');
+      setError(result.error ?? 'Contrasenya incorrecta');
     }
   };
 
@@ -248,7 +248,7 @@ export const RefereeMatchControl: React.FC = () => {
     m.score1 !== undefined && m.score2 !== undefined && !m.isPlaying
   );
 
-  if (loading) {
+  if (loading || authLoading) {
     return (
       <div className="flex flex-col items-center justify-center p-8">
         <Loader className="w-8 h-8 animate-spin text-blue-600 mb-4" />
@@ -288,9 +288,10 @@ export const RefereeMatchControl: React.FC = () => {
           
           <button
             type="submit"
+            disabled={authLoading}
             className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
           >
-            Accedir
+            {authLoading ? 'Validant...' : 'Accedir'}
           </button>
         </form>
       </div>

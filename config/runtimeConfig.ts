@@ -1,5 +1,5 @@
 export const DEFAULT_CLIENT_PORT = 5173;
-export const DEFAULT_API_PORT = 3001;
+export const DEFAULT_API_PORT = 8788;
 
 export const trimTrailingSlash = (value: string): string => value.replace(/\/+$/, '');
 

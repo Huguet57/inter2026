@@ -1,6 +1,6 @@
 import React from 'react';
 import { groups } from '../data/tournament';
-import { useMatches } from '../context/MatchContext';
+import { useMatches } from '../context/useMatches';
 import { calculateGroupStandings } from '../utils/knockoutUtils';
 
 export const GroupStage: React.FC = () => {
