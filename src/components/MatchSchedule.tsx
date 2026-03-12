@@ -83,7 +83,7 @@ export const MatchSchedule: React.FC = () => {
   // Combine all matches in chronological order
   const allMatchesArray = [
     ...matches.map(match => ({ ...match, phase: 'Fase de grups' })),
-    ...knockoutMatches.roundOf16.map(match => ({ ...match, phase: '16ens de final' })),
+    ...knockoutMatches.roundOf16.map(match => ({ ...match, phase: '14ens de final' })),
     ...knockoutMatches.quarterFinals.map(match => ({ ...match, phase: 'Quarts de final' })),
     ...knockoutMatches.semiFinals.map(match => ({ ...match, phase: 'Semifinals' })),
     [{ ...knockoutMatches.thirdPlace, phase: '3r i 4t lloc' }],

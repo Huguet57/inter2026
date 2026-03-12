@@ -355,7 +355,7 @@ Aquest fitxer defineix les dades canòniques que la UI ha de mostrar en l'estat 
     "field": 1,
     "description": "Equip 3 - Equip 14",
     "participants": "Bergants 1 - Marracos 1",
-    "phase": "16ens de final"
+    "phase": "14ens de final"
   },
   {
     "id": "R16-2",
@@ -363,7 +363,7 @@ Aquest fitxer defineix les dades canòniques que la UI ha de mostrar en l'estat 
     "field": 2,
     "description": "Equip 4 - Equip 13",
     "participants": "Bergants 2 - Ganàpies 2",
-    "phase": "16ens de final"
+    "phase": "14ens de final"
   },
   {
     "id": "R16-3",
@@ -371,7 +371,7 @@ Aquest fitxer defineix les dades canòniques que la UI ha de mostrar en l'estat 
     "field": 1,
     "description": "Equip 5 - Equip 12",
     "participants": "Embos 1 - Llunàtics 2",
-    "phase": "16ens de final"
+    "phase": "14ens de final"
   },
   {
     "id": "R16-4",
@@ -379,7 +379,7 @@ Aquest fitxer defineix les dades canòniques que la UI ha de mostrar en l'estat 
     "field": 2,
     "description": "Equip 6 - Equip 11",
     "participants": "Embos 2 - Ganàpies 1",
-    "phase": "16ens de final"
+    "phase": "14ens de final"
   },
   {
     "id": "R16-5",
@@ -387,7 +387,7 @@ Aquest fitxer defineix les dades canòniques que la UI ha de mostrar en l'estat 
     "field": 1,
     "description": "Equip 7 - Equip 10",
     "participants": "Engrescats 1 - Engrescats 2",
-    "phase": "16ens de final"
+    "phase": "14ens de final"
   },
   {
     "id": "R16-6",
@@ -395,7 +395,7 @@ Aquest fitxer defineix les dades canòniques que la UI ha de mostrar en l'estat 
     "field": 2,
     "description": "Equip 8 - Equip 9",
     "participants": "Descargolats - Grillats",
-    "phase": "16ens de final"
+    "phase": "14ens de final"
   },
   {
     "id": "QF-1",
@@ -468,7 +468,7 @@ Aquest fitxer defineix les dades canòniques que la UI ha de mostrar en l'estat 
 
 ```json
 {
-  "16ens de final": [
+  "14ens de final": [
     {
       "id": "R16-1",
       "time": "17:20-17:40",

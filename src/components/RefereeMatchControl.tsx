@@ -336,7 +336,7 @@ export const RefereeMatchControl: React.FC = () => {
       )}
 
       <div>
-        <h2 className="text-2xl font-bold mb-4">16ens de Final</h2>
+        <h2 className="text-2xl font-bold mb-4">14ens de Final</h2>
         <div className="grid gap-4 grid-cols-1">
           {knockoutMatches.roundOf16.map((match, index) => (
             <MatchControl

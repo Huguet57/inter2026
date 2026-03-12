@@ -66,7 +66,7 @@ export const KnockoutStage: React.FC = () => {
       )}
       
       <div>
-        <h3 className="text-xl font-bold mb-4">16ens de final</h3>
+        <h3 className="text-xl font-bold mb-4">14ens de final</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {knockoutMatches.roundOf16.map(renderMatchCard)}
         </div>
