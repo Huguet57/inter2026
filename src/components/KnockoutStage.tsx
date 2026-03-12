@@ -1,6 +1,6 @@
 import React from 'react';
 import { Match } from '../data/tournament';
-import { useMatches } from '../context/MatchContext';
+import { useMatches } from '../context/useMatches';
 import { groups } from '../data/tournament';
 import {
   calculateGroupStandings,

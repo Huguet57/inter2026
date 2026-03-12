@@ -6,6 +6,11 @@ server/node_modules
 dist
 dist-ssr
 .vite
+.wrangler
+.env
+.env.local
+server/.env
+server/.env.local
 *.local
 
 # Log files

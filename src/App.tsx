@@ -10,8 +10,9 @@ import { MatchSchedule } from './components/MatchSchedule';
 import { KnockoutStage } from './components/KnockoutStage';
 import { RefereeMatchControl } from './components/RefereeMatchControl';
 import { Statistics } from './components/Statistics';
-import { MatchProvider, useMatches } from './context/MatchContext';
+import { MatchProvider } from './context/MatchContext';
 import { AuthProvider } from './context/AuthContext';
+import { useMatches } from './context/useMatches';
 
 // Loading indicator component
 const LoadingIndicator = () => (

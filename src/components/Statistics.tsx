@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import BarChart from 'lucide-react/dist/esm/icons/bar-chart';
 import Trophy from 'lucide-react/dist/esm/icons/trophy';
-import { useMatches } from '../context/MatchContext';
+import { useMatches } from '../context/useMatches';
 import { groups } from '../data/tournament';
 import { calculateGroupStandings } from '../utils/knockoutUtils';
 

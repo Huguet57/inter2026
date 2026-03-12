@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import React, { createContext, ReactNode, useEffect, useState } from 'react';
+
 import {
   Match,
   KnockoutMatches,
@@ -7,6 +8,7 @@ import {
   knockoutMatches as initialKnockoutMatches,
 } from '../data/tournament';
 import { buildApiUrl } from '../config';
+import { useAuth } from './useAuth';
 
 const cloneMatches = (matches: Match[]): Match[] => matches.map((match) => ({ ...match }));
 
@@ -39,12 +41,12 @@ const normalizeKnockoutMatches = (knockoutData?: Partial<KnockoutMatches>): Knoc
 interface MatchContextType {
   matches: Match[];
   knockoutMatches: KnockoutMatches;
-  updateMatch: (index: number, updates: Partial<Match>) => void;
-  updateKnockoutMatch: (round: KnockoutRoundKey, index: number, updates: Partial<Match>) => void;
+  updateMatch: (index: number, updates: Partial<Match>) => Promise<void>;
+  updateKnockoutMatch: (round: KnockoutRoundKey, index: number, updates: Partial<Match>) => Promise<void>;
   loading: boolean;
 }
 
-const MatchContext = createContext<MatchContextType | undefined>(undefined);
+export const MatchContext = createContext<MatchContextType | undefined>(undefined);
 
 export const MatchProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [matches, setMatches] = useState<Match[]>(() => cloneMatches(initialGroupMatches));
@@ -52,111 +54,131 @@ export const MatchProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     cloneKnockoutMatches(initialKnockoutMatches),
   );
   const [loading, setLoading] = useState(true);
+  const { handleUnauthorized } = useAuth();
 
-  // Fetch data from API on initial load
   useEffect(() => {
+    let cancelled = false;
+
     const fetchData = async () => {
       try {
         setLoading(true);
-        
-        // Fetch group matches
+
         const matchesResponse = await fetch(buildApiUrl('/api/matches'));
         if (matchesResponse.ok) {
           const matchesData = await matchesResponse.json();
-          if (Array.isArray(matchesData)) {
+          if (!cancelled && Array.isArray(matchesData)) {
             setMatches(matchesData);
           }
         }
-        
-        // Fetch knockout matches
+
         const knockoutResponse = await fetch(buildApiUrl('/api/knockout'));
         if (knockoutResponse.ok) {
           const knockoutData = await knockoutResponse.json();
-          if (knockoutData) {
+          if (!cancelled && knockoutData) {
             setKnockoutMatches(normalizeKnockoutMatches(knockoutData));
           }
         }
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
-        setLoading(false);
+        if (!cancelled) {
+          setLoading(false);
+        }
       }
     };
 
     fetchData();
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
-  // Update a group match
   const updateMatch = async (index: number, updates: Partial<Match>) => {
-    try {
-      const previousMatches = matches;
+    const previousMatches = cloneMatches(matches);
+    const nextMatches = cloneMatches(matches);
+    nextMatches[index] = { ...nextMatches[index], ...updates };
+    setMatches(nextMatches);
 
-      // Optimistically update UI
-      const newMatches = cloneMatches(matches);
-      newMatches[index] = { ...newMatches[index], ...updates };
-      setMatches(newMatches);
-      
-      // Send update to API
+    try {
       const response = await fetch(buildApiUrl(`/api/matches/${index}`), {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'same-origin',
         body: JSON.stringify(updates),
       });
-      
+
+      if (response.status === 401) {
+        setMatches(previousMatches);
+        handleUnauthorized();
+        return;
+      }
+
       if (!response.ok) {
         console.error('Failed to update match');
-        // Revert to original state if API update fails
         setMatches(previousMatches);
       }
     } catch (error) {
       console.error('Error updating match:', error);
-      // Revert to original state on error
-      setMatches(matches);
+      setMatches(previousMatches);
     }
   };
 
-  // Update a knockout match
   const updateKnockoutMatch = async (
     round: KnockoutRoundKey,
     index: number,
-    updates: Partial<Match>
+    updates: Partial<Match>,
   ) => {
-    try {
-      // Optimistically update UI
-      setKnockoutMatches(prev => {
-        if (round === 'thirdPlace' || round === 'final') {
-          return {
-            ...prev,
-            [round]: { ...prev[round], ...updates }
-          };
-        }
-        
-        const newRound = [...prev[round]];
-        newRound[index] = { ...newRound[index], ...updates };
+    const previousKnockoutMatches = cloneKnockoutMatches(knockoutMatches);
+
+    setKnockoutMatches((currentKnockoutMatches) => {
+      if (round === 'thirdPlace' || round === 'final') {
         return {
-          ...prev,
-          [round]: newRound
+          ...currentKnockoutMatches,
+          [round]: { ...currentKnockoutMatches[round], ...updates },
         };
-      });
-      
-      // Send update to API
+      }
+
+      const nextRound = [...currentKnockoutMatches[round]];
+      nextRound[index] = { ...nextRound[index], ...updates };
+
+      return {
+        ...currentKnockoutMatches,
+        [round]: nextRound,
+      };
+    });
+
+    try {
       const response = await fetch(buildApiUrl(`/api/knockout/${round}/${index}`), {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'same-origin',
         body: JSON.stringify(updates),
       });
-      
+
+      if (response.status === 401) {
+        setKnockoutMatches(previousKnockoutMatches);
+        handleUnauthorized();
+        return;
+      }
+
       if (!response.ok) {
         console.error('Failed to update knockout match');
-        // You could revert the state here if needed
+        setKnockoutMatches(previousKnockoutMatches);
+        return;
+      }
+
+      const payload = await response.json();
+      if (payload) {
+        setKnockoutMatches(normalizeKnockoutMatches(payload));
       }
     } catch (error) {
       console.error('Error updating knockout match:', error);
-      // You could revert the state here if needed
+      setKnockoutMatches(previousKnockoutMatches);
     }
   };
 
@@ -166,11 +188,3 @@ export const MatchProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     </MatchContext.Provider>
   );
 };
-
-export const useMatches = () => {
-  const context = useContext(MatchContext);
-  if (context === undefined) {
-    throw new Error('useMatches must be used within a MatchProvider');
-  }
-  return context;
-}; 
