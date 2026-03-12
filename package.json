@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Inter de Marracos 2026",
   "type": "module",
-  "homepage": "https://inter-2026.pages.dev",
+  "homepage": "https://inter2026.tenimaleta.com",
   "scripts": {
     "setup": "npm install",
     "dev:client": "vite",

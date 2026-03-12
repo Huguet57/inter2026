@@ -25,7 +25,7 @@ Si necessites personalitzar ports o URLs, utilitza un fitxer `.env` o `.env.loca
 PORT=8788
 VITE_PORT=5173
 VITE_API_BASE_URL=
-VITE_SITE_URL=https://inter-2026.pages.dev
+VITE_SITE_URL=https://inter2026.tenimaleta.com
 ```
 
 - `PORT` defineix el port local del runtime de `wrangler pages dev` al qual Vite farà proxy de `/api`.
@@ -51,7 +51,7 @@ Scripts útils:
 - `npm run d1:migrate:local` - aplica l'esquema D1 local
 - `npm run d1:seed:current:local` - genera el seed des de `server/data/*.json` i el carrega a D1 local
 - `npm run init:data` - regenera `d1/seed-base.sql` des de `src/data/tournament.ts`
-- `npm run deploy` - build i deploy a `inter-2026.pages.dev`
+- `npm run deploy` - build i deploy a Cloudflare Pages per al projecte `inter-2026`
 
 ## Deploy Cloudflare
 
@@ -71,6 +71,26 @@ npm run deploy
 ```
 
 Documentació més detallada a [CLOUDFLARE_PAGES_DEPLOYMENT.md](./CLOUDFLARE_PAGES_DEPLOYMENT.md).
+
+## Domini personalitzat a Route 53
+
+Si vols publicar la web a `https://inter2026.tenimaleta.com` mentre el DNS de `tenimaleta.com` continua a AWS Route 53:
+
+1. A Cloudflare Dashboard, entra a `Workers & Pages > inter-2026 > Custom domains`.
+2. Fes `Set up a domain` i afegeix `inter2026.tenimaleta.com`.
+3. Quan Cloudflare t'indiqui que cal apuntar el subdomini, crea a Route 53 un registre `CNAME`:
+
+```text
+Name: inter2026
+Type: CNAME
+Value: inter-2026.pages.dev
+TTL: 300
+```
+
+4. Espera que el domini passi a estat actiu a Cloudflare.
+5. Torna a desplegar amb `npm run deploy` perquè la build injecti la URL pública correcta a les metadades socials.
+
+Pots mantenir `VITE_API_BASE_URL` buit: en producció, frontend i API continuen servint-se des del mateix origen.
 
 ## API
 

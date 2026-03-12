@@ -48,6 +48,25 @@ npm run deploy
 The production deployment is published at `https://inter-2026.pages.dev`.
 If you need a different public URL for metadata, override it with `VITE_SITE_URL`.
 
+## Custom domain with AWS Route 53
+
+If `tenimaleta.com` stays on AWS Route 53, use a subdomain such as `inter2026.tenimaleta.com`.
+
+1. Add `inter2026.tenimaleta.com` under `Workers & Pages > inter-2026 > Custom domains`.
+2. After associating the domain in Cloudflare Pages, create this Route 53 record:
+
+```text
+Name: inter2026
+Type: CNAME
+Value: inter-2026.pages.dev
+TTL: 300
+```
+
+3. Wait until the custom domain becomes active in Cloudflare.
+4. Set `VITE_SITE_URL=https://inter2026.tenimaleta.com` if you want the generated metadata to use the custom domain explicitly.
+
+Important: add the domain to the Pages project first, and only then create the CNAME in Route 53. Adding only the DNS record can leave the hostname unresolved by Pages and return `522`.
+
 ## Notes
 
 - Local development uses `npm run dev`, which starts Vite on `5173` and `wrangler pages dev` on `8788`.
