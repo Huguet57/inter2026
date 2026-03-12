@@ -1,0 +1,120 @@
+{
+  "roundOf16": [
+    {
+      "id": "R16-1",
+      "time": "17:20-17:40",
+      "field": 1,
+      "description": "Equip 3 - Equip 14",
+      "team1Source": { "type": "seed", "seed": 3 },
+      "team2Source": { "type": "seed", "seed": 14 }
+    },
+    {
+      "id": "R16-2",
+      "time": "17:20-17:40",
+      "field": 2,
+      "description": "Equip 4 - Equip 13",
+      "team1Source": { "type": "seed", "seed": 4 },
+      "team2Source": { "type": "seed", "seed": 13 }
+    },
+    {
+      "id": "R16-3",
+      "time": "17:40-18:00",
+      "field": 1,
+      "description": "Equip 5 - Equip 12",
+      "team1Source": { "type": "seed", "seed": 5 },
+      "team2Source": { "type": "seed", "seed": 12 }
+    },
+    {
+      "id": "R16-4",
+      "time": "17:40-18:00",
+      "field": 2,
+      "description": "Equip 6 - Equip 11",
+      "team1Source": { "type": "seed", "seed": 6 },
+      "team2Source": { "type": "seed", "seed": 11 }
+    },
+    {
+      "id": "R16-5",
+      "time": "18:00-18:20",
+      "field": 1,
+      "description": "Equip 7 - Equip 10",
+      "team1Source": { "type": "seed", "seed": 7 },
+      "team2Source": { "type": "seed", "seed": 10 }
+    },
+    {
+      "id": "R16-6",
+      "time": "18:00-18:20",
+      "field": 2,
+      "description": "Equip 8 - Equip 9",
+      "team1Source": { "type": "seed", "seed": 8 },
+      "team2Source": { "type": "seed", "seed": 9 }
+    }
+  ],
+  "quarterFinals": [
+    {
+      "id": "QF-1",
+      "time": "18:20-18:45",
+      "field": 1,
+      "description": "Equip 1 - Guanyador 8-9",
+      "team1Source": { "type": "seed", "seed": 1 },
+      "team2Source": { "type": "winner", "matchId": "R16-6" }
+    },
+    {
+      "id": "QF-2",
+      "time": "18:20-18:45",
+      "field": 2,
+      "description": "Guanyador 4-13 - Guanyador 5-12",
+      "team1Source": { "type": "winner", "matchId": "R16-2" },
+      "team2Source": { "type": "winner", "matchId": "R16-3" }
+    },
+    {
+      "id": "QF-3",
+      "time": "18:45-19:10",
+      "field": 1,
+      "description": "Guanyador 3-14 - Guanyador 6-11",
+      "team1Source": { "type": "winner", "matchId": "R16-1" },
+      "team2Source": { "type": "winner", "matchId": "R16-4" }
+    },
+    {
+      "id": "QF-4",
+      "time": "18:45-19:10",
+      "field": 2,
+      "description": "Equip 2 - Guanyador 7-10",
+      "team1Source": { "type": "seed", "seed": 2 },
+      "team2Source": { "type": "winner", "matchId": "R16-5" }
+    }
+  ],
+  "semiFinals": [
+    {
+      "id": "SF-1",
+      "time": "19:10-19:35",
+      "field": 1,
+      "description": "Guanyador 18:20 P1 - Guanyador 18:20 P2",
+      "team1Source": { "type": "winner", "matchId": "QF-1" },
+      "team2Source": { "type": "winner", "matchId": "QF-2" }
+    },
+    {
+      "id": "SF-2",
+      "time": "19:35-20:00",
+      "field": 1,
+      "description": "Guanyador 18:45 P1 - Guanyador 18:45 P2",
+      "team1Source": { "type": "winner", "matchId": "QF-3" },
+      "team2Source": { "type": "winner", "matchId": "QF-4" }
+    }
+  ],
+  "thirdPlace": {
+    "id": "TP-1",
+    "time": "20:00-20:35",
+    "field": 1,
+    "description": "3r i 4t Finalista",
+    "team1Source": { "type": "loser", "matchId": "SF-1" },
+    "team2Source": { "type": "loser", "matchId": "SF-2" }
+  },
+  "final": {
+    "id": "F-1",
+    "time": "20:35-21:10",
+    "field": 1,
+    "description": "1r i 2n Finalista",
+    "team1Source": { "type": "winner", "matchId": "SF-1" },
+    "team2Source": { "type": "winner", "matchId": "SF-2" }
+  }
+}
