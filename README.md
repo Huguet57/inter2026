@@ -19,29 +19,44 @@ Aplicacio per gestionar l'Inter de Marracos 2026: fase de grups, eliminatories, 
 
 ```bash
 npm install
-npm --prefix server install
 ```
+
+`npm install` ja instal·la també les dependencies de `server/`.
 
 ## Variables d'entorn
 
-Utilitza un fitxer `.env` o `.env.local` amb aquestes variables:
+En desenvolupament local no cal cap `.env` si et van bé els valors per defecte.
+
+Si necessites personalitzar ports o URLs, utilitza un fitxer `.env` o `.env.local` al root:
 
 ```bash
+PORT=3001
+VITE_PORT=5173
 VITE_API_BASE_URL=
-VITE_SITE_URL=http://localhost:5173
+VITE_SITE_URL=
 ```
 
+- `PORT` defineix el port de l'API Express.
+- `VITE_PORT` defineix el port preferit del client Vite.
 - `VITE_API_BASE_URL` buit fa servir rutes relatives (`/api`).
-- `VITE_SITE_URL` s'utilitza a les metadades HTML.
+- `VITE_SITE_URL` només cal si vols forçar la URL pública de les metadades HTML.
+- El backend també llegeix aquest mateix fitxer `.env`.
 
 ## Desenvolupament
 
 ```bash
-npm run dev:server
-npm run dev:client
+npm run dev
 ```
 
-L'API escolta al port `3001` i el client al port `5173`.
+Per defecte:
+
+- l'API escolta al port `3001`
+- el client prova `5173` i, si està ocupat, Vite fa servir el següent port lliure
+
+Scripts útils:
+
+- `npm run check` - lint + tests
+- `npm run init:data` - reinicialitza les dades JSON del torneig
 
 ## API
 

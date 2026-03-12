@@ -31,7 +31,8 @@ npm install
 npm run deploy
 ```
 
-Set `VITE_SITE_URL` to your public GitHub Pages URL before deploying.
+If `package.json` has the correct `homepage`, that value is used automatically for social metadata.
+Set `VITE_SITE_URL` only if you need to override that public URL.
 
 ## Notes
 

@@ -1,9 +1,24 @@
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 
-export default defineConfig(({ mode }) => {
+import {
+  DEFAULT_API_PORT,
+  DEFAULT_CLIENT_PORT,
+  parsePort,
+  resolveSiteUrl,
+  trimTrailingSlash,
+} from './config/runtimeConfig';
+
+export default defineConfig(({ command, mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
-  const siteUrl = (env.VITE_SITE_URL || 'http://localhost:5173').replace(/\/+$/, '');
+  const clientPort = parsePort(env.VITE_PORT, DEFAULT_CLIENT_PORT);
+  const apiPort = parsePort(env.PORT, DEFAULT_API_PORT);
+  const packageSiteUrl = trimTrailingSlash(process.env.npm_package_homepage ?? '');
+  const defaultSiteUrl =
+    command === 'build' && packageSiteUrl
+      ? packageSiteUrl
+      : `http://localhost:${clientPort}`;
+  const siteUrl = resolveSiteUrl(env.VITE_SITE_URL, defaultSiteUrl);
 
   return {
     base: '/',
@@ -20,9 +35,10 @@ export default defineConfig(({ mode }) => {
       exclude: ['lucide-react'],
     },
     server: {
+      port: clientPort,
       proxy: {
         '/api': {
-          target: 'http://localhost:3001',
+          target: `http://localhost:${apiPort}`,
           changeOrigin: true,
         },
       },
